@@ -1,0 +1,42 @@
+buildscript {
+	ext {
+		springBootVersion = '1.4.0.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+	configurations {
+		compile.exclude module: "spring-boot-starter-tomcat"
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+jar {
+	baseName = 'testerapp'
+	version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-freemarker')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile group: 'io.undertow', name: 'undertow-core', version: '1.4.0.CR3'
+	compile group: 'io.undertow', name: 'undertow-servlet', version: '1.4.0.CR3'
+	compile group: 'org.json', name: 'json', version: '20090211'
+	runtime('org.hsqldb:hsqldb')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
