@@ -25,7 +25,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    private final String ROOT = "E:/Ambidekstr/upload-dir";
+    private final String ROOT = "C:/upload-dir";
 
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<Object> addUser(@RequestBody User user){
