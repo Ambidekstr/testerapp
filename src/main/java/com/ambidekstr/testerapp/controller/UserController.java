@@ -29,13 +29,18 @@ public class UserController {
     @Autowired
     private MetaDataService metaDataService;
 
+    public UserController(UserService userService, MetaDataService metaDataService){
+        this.userService = userService;
+        this.metaDataService = metaDataService;
+    }
+
     private final String ROOT = "E:/";
 
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<Object> addUser(@RequestBody User user){
+    public ResponseEntity<String> addUser(@RequestBody User user){
         if(!userService.emailCheck(user.getEmail())){
             userService.saveUser(user);
-            return new ResponseEntity<>(user.getUuid(),HttpStatus.OK);
+            return new ResponseEntity<>(user.getUuid().toString(),HttpStatus.OK);
         }else{
             return new ResponseEntity<>("This email already used",HttpStatus.OK);
         }
@@ -81,7 +86,7 @@ public class UserController {
             } catch (IOException |RuntimeException e) {
                 return new ResponseEntity<>("Failed to upload file", HttpStatus.OK);
             }
-            return new ResponseEntity<>("File was successfully", HttpStatus.OK);
+            return new ResponseEntity<>("File was successfully uploaded", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Failed to upload file", HttpStatus.OK);
         }
