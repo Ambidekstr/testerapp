@@ -1,6 +1,8 @@
 package com.ambidekstr.testerapp.controller;
 
+import com.ambidekstr.testerapp.domain.MetaData;
 import com.ambidekstr.testerapp.domain.User;
+import com.ambidekstr.testerapp.service.MetaDataService;
 import com.ambidekstr.testerapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,12 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.UUID;
 
 /**
@@ -25,7 +26,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    private final String ROOT = "C:/upload-dir";
+    @Autowired
+    private MetaDataService metaDataService;
+
+    private final String ROOT = "E:/";
 
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<Object> addUser(@RequestBody User user){
@@ -65,15 +69,19 @@ public class UserController {
         return new ModelAndView("fileupload");
     }
     @RequestMapping(value = "/user/{uuid}/receipts", method = RequestMethod.POST)
-    public ResponseEntity<String> fileUpload(@PathVariable UUID uuid, @RequestParam(name="file", value = "file") MultipartFile file){
-        userService.fingUserByID(uuid);
+    public ResponseEntity<?> fileUpload(@PathVariable UUID uuid, @RequestParam(name="file", value = "file") MultipartFile file){
         if (!file.isEmpty()) {
             try {
-                Files.copy(file.getInputStream(), Paths.get(ROOT, file.getOriginalFilename()));
+                InputStream is = file.getInputStream();
+                Files.copy(is, Paths.get(ROOT, file.getOriginalFilename()));
+                BasicFileAttributes attr = Files.readAttributes(Paths.get(ROOT, file.getOriginalFilename()), BasicFileAttributes.class);
+                MetaData metaData = new MetaData(uuid,attr.creationTime().toString(),attr.size());
+                metaDataService.saveMetaData(metaData);
+                is.close();
             } catch (IOException |RuntimeException e) {
                 return new ResponseEntity<>("Failed to upload file", HttpStatus.OK);
             }
-            return new ResponseEntity<>("File was successfully upload", HttpStatus.OK);
+            return new ResponseEntity<>("File was successfully", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Failed to upload file", HttpStatus.OK);
         }
