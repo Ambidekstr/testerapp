@@ -10,32 +10,24 @@ import java.util.UUID;
 @Entity
 public class User implements Serializable {
 
-    @Id
-    @Column(name = "id", nullable = false,updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
     @Column(name = "lastName",nullable = false)
     private String lastName;
 
     @Column(name = "firstName",nullable = false)
     private String firstName;
 
-    @Column(name = "email",nullable = false)
+    @Column(name = "email",nullable = false, unique = true)
     private String email;
 
     @Column(name = "password",nullable = false)
     private String password;
 
-    @Column(name = "UUID", nullable = false)
+    @Id
+    @Column(name = "UUID", nullable = false,updatable = false)
     private UUID uuid;
 
     public User(){
         this.uuid = UUID.randomUUID();
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getLastName() {
