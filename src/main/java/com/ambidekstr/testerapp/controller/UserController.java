@@ -19,6 +19,12 @@ import java.util.UUID;
 
 /**
  * Created by anatolii on 08.08.2016.
+ * Controller for all requests
+ * addUser - saves new user to database and return his uuid;
+ * loginUser - check if email and password is correct and return a token for this login;
+ * findUserByEmail - check if email is correct if so return users first and last name;
+ * fileUploadForm - return file upload page;
+ * fileUpload - check if file is not empty and then save it and record metadata to database;
  */
 @RestController
 public class UserController {
@@ -34,7 +40,7 @@ public class UserController {
         this.metaDataService = metaDataService;
     }
 
-    private final String ROOT = "E:/";
+    private final String ROOT = "C:/";
 
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<String> addUser(@RequestBody User user){
@@ -69,10 +75,11 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/user/{uuid}/receipts", method = RequestMethod.GET)
-    public ModelAndView fileUploadForm(@PathVariable UUID uuid){
+    @RequestMapping(value = "/user/receipts", method = RequestMethod.GET)
+    public ModelAndView fileUploadForm(){
         return new ModelAndView("fileupload");
     }
+
     @RequestMapping(value = "/user/{uuid}/receipts", method = RequestMethod.POST)
     public ResponseEntity<?> fileUpload(@PathVariable UUID uuid, @RequestParam(name="file", value = "file") MultipartFile file){
         if (!file.isEmpty()) {

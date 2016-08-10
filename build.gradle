@@ -8,14 +8,15 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 	}
-	configurations {
-		compile.exclude module: "spring-boot-starter-tomcat"
-	}
+
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
+apply plugin: 'application'
+
+mainClassName = 'com.ambidekstr.testerapp.TesterappApplication'
 
 jar {
 	baseName = 'testerapp'
@@ -27,7 +28,9 @@ targetCompatibility = 1.8
 repositories {
 	mavenCentral()
 }
-
+configurations {
+	compile.exclude module: "spring-boot-starter-tomcat"
+}
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
@@ -42,4 +45,7 @@ dependencies {
 	compile group: 'commons-io', name: 'commons-io', version: '2.4'
 	runtime('org.hsqldb:hsqldb')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.14'
 }

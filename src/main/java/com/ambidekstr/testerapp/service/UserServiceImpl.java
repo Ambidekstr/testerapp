@@ -50,11 +50,7 @@ public class UserServiceImpl implements UserService {
             usersWithPasswords.put(u.getEmail(),u.getPassword());
         }
         if (usersWithPasswords.containsKey(email)){
-            if(usersWithPasswords.get(email).equals(password)){
-                return true;
-            }else{
-                return false;
-            }
+            return usersWithPasswords.get(email).equals(password);
         }else{
             return false;
         }
