@@ -1,12 +1,15 @@
 package com.ambidekstr.testerapp.controller.integration;
 
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import com.ambidekstr.testerapp.TesterappApplication;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -28,6 +32,9 @@ import org.springframework.web.context.WebApplicationContext;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserControllerIntegrationTest {
 
+    @Rule
+    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("build/generated-snippets");
+
     @Autowired
     private WebApplicationContext context;
 
@@ -35,7 +42,9 @@ public class UserControllerIntegrationTest {
 
     @Before
     public void setup(){
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(documentationConfiguration(this.restDocumentation))
+                .build();
     }
 
     @Test
@@ -50,7 +59,7 @@ public class UserControllerIntegrationTest {
 
         mockMvc.perform(post(addUserUrl).contentType(MediaType.APPLICATION_JSON).content(content.getBytes()))
                 .andExpect(status().isOk())
-                .andDo(print())
+                .andDo(document("index"))
                 .andReturn();
 
     }
@@ -60,7 +69,7 @@ public class UserControllerIntegrationTest {
         String loginUserUrl = "/user/login";
         mockMvc.perform(post(loginUserUrl).param("email","aavolosh@gmail.com").param("password","password"))
                 .andExpect(status().isOk())
-                .andDo(print())
+                .andDo(document("index"))
                 .andReturn();
     }
 
@@ -70,7 +79,7 @@ public class UserControllerIntegrationTest {
         mockMvc.perform(get(findUserByEmailUrl))
                 .andExpect(content().string("First name: Anatolii Last name: Voloshyn"))
                 .andExpect(status().isOk())
-                .andDo(print())
+                .andDo(document("index"))
                 .andReturn();
     }
 
@@ -83,7 +92,7 @@ public class UserControllerIntegrationTest {
                 .file(mockMultipartFile)
                 .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isOk())
-                .andDo(print())
+                .andDo(document("index"))
                 .andReturn();
 
     }
