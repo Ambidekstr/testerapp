@@ -35,18 +35,12 @@ use of HTTP verbs.
 
 |===
 
-| Verb 
-| Usage
-
-
+| Verb  | Usage 
 | `GET`
+ | Used to retrieve a resource
 
-| Used to retrieve a resource
 
-
-| `POST`
-
-| Used to create a new resource
+| `POST`| Used to create a new resource
 
 
 
