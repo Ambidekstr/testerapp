@@ -1,24 +1,38 @@
 buildscript {
 	ext {
 		springBootVersion = '1.4.0.RELEASE'
+		snippetsDir = file('build/generated-snippets')
 	}
 	repositories {
 		mavenCentral()
+		jcenter()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
 	}
 
-}
-plugins {
-	id "org.asciidoctor.convert" version "1.5.2"
+
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'application'
+apply plugin: 'org.asciidoctor.convert'
 
+ext {
+	snippetsDir = file('build/generated-snippets')
+}
+test {
+	outputs.dir snippetsDir
+}
+asciidoctor {
+	sourceDir 'src/docs'
+	attributes 'snippets': snippetsDir
+	inputs.dir snippetsDir
+	dependsOn test
+}
 
 mainClassName = 'com.ambidekstr.testerapp.TesterappApplication'
 
@@ -35,21 +49,12 @@ targetCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 configurations {
 	compile.exclude module: "spring-boot-starter-tomcat"
 }
-ext {
-	snippetsDir = file('build/generated-snippets')
-}
-test {
-	outputs.dir snippetsDir
-}
-asciidoctor {
-	attributes 'snippets': snippetsDir
-	inputs.dir snippetsDir
-	dependsOn test
-}
+
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
