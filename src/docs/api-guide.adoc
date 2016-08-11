@@ -61,15 +61,12 @@ use of HTTP status codes.
 
 |===
 
-| Status code 
-| Usage
+| Status code | Usage
 
 
 | `200 OK`
+    | The request completed successfully
 
-| The request completed successfully
-
-| `400 Bad Request`
 |===
 
 
@@ -96,7 +93,7 @@ The add user resource is used to register users.
 
 [[resources-test-register]]
 
-=== Retrieving a car
+=== Register a user
 
 
 
