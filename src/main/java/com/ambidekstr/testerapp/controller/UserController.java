@@ -40,7 +40,7 @@ public class UserController {
         this.metaDataService = metaDataService;
     }
 
-    private final String ROOT = "C:/";
+    private final String ROOT = "E:/";
 
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<String> addUser(@RequestBody User user){
@@ -63,7 +63,7 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/user/{email}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{email:.+}", method = RequestMethod.GET)
     public ResponseEntity<Object> findUserByEmail(@PathVariable String email){
         User user = userService.getUserByEmail(email);
         if(!(user==null)){
@@ -81,7 +81,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/{uuid}/receipts", method = RequestMethod.POST)
-    public ResponseEntity<?> fileUpload(@PathVariable UUID uuid, @RequestParam(name="file", value = "file") MultipartFile file){
+    public ResponseEntity<?> fileUpload(@PathVariable UUID uuid, @RequestParam(name="file") MultipartFile file){
         if (!file.isEmpty()) {
             try {
                 InputStream is = file.getInputStream();
@@ -91,6 +91,7 @@ public class UserController {
                 metaDataService.saveMetaData(metaData);
                 is.close();
             } catch (IOException |RuntimeException e) {
+                e.printStackTrace();
                 return new ResponseEntity<>("Failed to upload file", HttpStatus.OK);
             }
             return new ResponseEntity<>("File was successfully uploaded", HttpStatus.OK);

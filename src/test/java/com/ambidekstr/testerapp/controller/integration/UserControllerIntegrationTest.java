@@ -3,8 +3,8 @@ package com.ambidekstr.testerapp.controller.integration;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import com.ambidekstr.testerapp.TesterappApplication;
 import org.junit.Before;
@@ -59,7 +59,7 @@ public class UserControllerIntegrationTest {
 
         mockMvc.perform(post(addUserUrl).contentType(MediaType.APPLICATION_JSON).content(content.getBytes()))
                 .andExpect(status().isOk())
-                .andDo(document("index"))
+                .andDo(document("adding-user"))
                 .andReturn();
 
     }
@@ -69,30 +69,31 @@ public class UserControllerIntegrationTest {
         String loginUserUrl = "/user/login";
         mockMvc.perform(post(loginUserUrl).param("email","aavolosh@gmail.com").param("password","password"))
                 .andExpect(status().isOk())
-                .andDo(document("index"))
+                .andDo(document("login",requestParameters(
+                        parameterWithName("email").description("The user's email"),
+                        parameterWithName("password").description("The user's password"))))
                 .andReturn();
     }
 
     @Test
     public void cFindUserByEmailTest() throws Exception{
-        String findUserByEmailUrl = "/user/aavolosh@gmail.com/";
-        mockMvc.perform(get(findUserByEmailUrl))
+        mockMvc.perform(get("/user/aavolosh@gmail.com"))
                 .andExpect(content().string("First name: Anatolii Last name: Voloshyn"))
                 .andExpect(status().isOk())
-                .andDo(document("index"))
+                .andDo(document("find-user-by-email"))
                 .andReturn();
     }
 
     @Test
     public void dFileUploadTest() throws Exception{
-        String fileUploadUrl = "/user/0b7dffe9-41bb-43e7-8642-d7aedf5fd031/receipts";
-        String s ="blablabla";
-        MockMultipartFile mockMultipartFile = new MockMultipartFile("file",s.getBytes());
+        String fileUploadUrl = "/user/550e8400-e29b-41d4-a716-446655440000/receipts";
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file","test".getBytes());
         mockMvc.perform(fileUpload(fileUploadUrl)
                 .file(mockMultipartFile)
                 .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isOk())
-                .andDo(document("index"))
+                .andDo(document("file-upload", requestParts(
+                        partWithName("file").description("The file to upload"))))
                 .andReturn();
 
     }
