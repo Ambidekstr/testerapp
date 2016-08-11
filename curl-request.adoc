@@ -1,0 +1,4 @@
+[source,bash]
+----
+$ curl 'http://localhost:8080/user/0b7dffe9-41bb-43e7-8642-d7aedf5fd031/receipts' -i -X POST -H 'Content-Type: multipart/form-data' -F 'file=blablabla'
+----
