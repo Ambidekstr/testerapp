@@ -137,7 +137,7 @@ include::{snippets}/find-user-by-email/http-response.adoc[]
 
 == Upload
 
-Another feature is uploading of pictures. You can upload a picture (max size 500KB) with a form. You can find this form by `GET` request on  
+Another feature is uploading of pictures. You can upload a picture (max size 500KB) with a form. You can find this form by `GET` request on /user/receipts. 
 
 [[services-uploading-picture]]
 
