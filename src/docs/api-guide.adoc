@@ -71,7 +71,7 @@ include::{snippets}/adding-user/http-response.adoc[]
 
 == Login
 
-Now as you register a user you can login with an appropriate email and password.  
+Now as you register a user you can login with an appropriate email and password and returns a unique token each time you login.  
 
 [[services-login-user]]
 
