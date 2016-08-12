@@ -23,6 +23,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 
 /**
  * Created by anatolii on 09.08.2016.
@@ -87,13 +90,15 @@ public class UserControllerIntegrationTest {
     @Test
     public void dFileUploadTest() throws Exception{
         String fileUploadUrl = "/user/550e8400-e29b-41d4-a716-446655440000/receipts";
-        MockMultipartFile mockMultipartFile = new MockMultipartFile("file","test".getBytes());
+        String originalFileName = "t375x200_ArticlePreviewImage_19549.png";
+        File file = new File("E:\\Innovations\\"+originalFileName);
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", originalFileName, "multipart/form-data", new FileInputStream(file));
         mockMvc.perform(fileUpload(fileUploadUrl)
                 .file(mockMultipartFile)
                 .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isOk())
                 .andDo(document("file-upload", requestParts(
-                        partWithName("file").description("The file to upload"))))
+                        partWithName("file").description("File was successfully uploaded"))))
                 .andReturn();
 
     }

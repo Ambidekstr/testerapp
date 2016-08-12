@@ -40,7 +40,7 @@ public class UserController {
         this.metaDataService = metaDataService;
     }
 
-    private final String ROOT = "E:/";
+    private final String ROOT = "E:\\";
 
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<String> addUser(@RequestBody User user){
