@@ -71,33 +71,33 @@ use of HTTP status codes.
 
 
 
-[[resources]]
+[[services]]
 
-= Resources
-
-
-
-
-
-[[resources-add-user]]
-
-== Add user
-
-
-
-The add user resource is used to register users.
+= Services
 
 
 
 
 
-[[resources-test-register]]
+[[services-add-user]]
+
+== Add a user
+
+
+
+The add user service is used to register a user. It accept JSON with user's first name, last name, email and password write this in database and return UUID of this user.
+
+
+
+
+
+[[services-add-user-register]]
 
 === Register a user
 
 
 
-A `POST` request is used to create a user
+A `POST` request is used to create a user.
 
 
 
@@ -130,3 +130,170 @@ include::{snippets}/adding-user/httpie-request.adoc[]
 
 
 include::{snippets}/adding-user/http-response.adoc[]
+
+
+
+
+[[services-login]]
+
+== Login
+
+Now as you registrate a user you can login with an appropriate email and password.  
+
+
+
+
+[[services-login-user]]
+
+=== Login user
+
+
+
+A `POST` request is used to login as user.
+
+==== Request parameters
+
+Email and password of user should be a part of `POST` request.
+
+include::{snippets}/login/request-parameters.adoc[]
+
+
+
+==== Curl request
+
+
+
+include::{snippets}/login/curl-request.adoc[]
+
+
+
+==== HTTP request
+
+
+
+include::{snippets}/login/http-request.adoc[]
+
+
+
+==== HTTPie request
+
+
+
+include::{snippets}/login/httpie-request.adoc[]
+
+
+
+==== Response 
+
+
+
+include::{snippets}/login/http-response.adoc[]
+
+
+
+[[services-finding-user]]
+
+== Finding user
+
+Also if you know the user's email you can find out his/her first and last name. For this you need a `GET` request with email as path parameter. 
+
+
+
+
+[[services-finding-user-request]]
+
+=== Find user
+
+
+A `GET` request with email as path parameter will show you user's first and last name.
+
+==== Path parameters
+
+include::{snippets}/find-user-by-email/path-parameters.adoc[]
+
+
+
+==== Curl request
+
+
+
+include::{snippets}/find-user-by-email/curl-request.adoc[]
+
+
+
+==== HTTP request
+
+
+
+include::{snippets}/find-user-by-email/http-request.adoc[]
+
+
+
+==== HTTPie request
+
+
+
+include::{snippets}/find-user-by-email/httpie-request.adoc[]
+
+
+
+==== Response 
+
+
+
+include::{snippets}/find-user-by-email/http-response.adoc[]
+
+
+
+[[services-uploading]]
+
+== Upload
+
+Another feature is uploading of pictures. You can upload a picture (max size 500KB) with a form. You can find this form by `GET` request on  
+
+
+
+
+[[services-uploading-picture]]
+
+=== Upload a picture
+
+
+
+A `POST` request is used to upload a file with path parameter of UUID.
+
+==== Request parts
+
+include::{snippets}/file-upload/request-parts.adoc[]
+
+
+
+==== Curl request
+
+
+
+include::{snippets}/file-upload/curl-request.adoc[]
+
+
+
+==== HTTP request
+
+
+
+include::{snippets}/file-upload/http-request.adoc[]
+
+
+
+==== HTTPie request
+
+
+
+include::{snippets}/file-upload/httpie-request.adoc[]
+
+
+
+==== Response 
+
+
+
+include::{snippets}/file-upload/http-response.adoc[]
