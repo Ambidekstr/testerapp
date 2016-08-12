@@ -17,6 +17,8 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.UUID;
 
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
 /**
  * Created by anatolii on 08.08.2016.
  * Controller for all requests
@@ -85,7 +87,7 @@ public class UserController {
         if (!file.isEmpty()) {
             try {
                 InputStream is = file.getInputStream();
-                Files.copy(is, Paths.get(ROOT, file.getOriginalFilename()));
+                Files.copy(is, Paths.get(ROOT, file.getOriginalFilename()), REPLACE_EXISTING);
                 BasicFileAttributes attr = Files.readAttributes(Paths.get(ROOT, file.getOriginalFilename()), BasicFileAttributes.class);
                 MetaData metaData = new MetaData(uuid,attr.creationTime().toString(),attr.size());
                 metaDataService.saveMetaData(metaData);

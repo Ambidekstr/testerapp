@@ -90,14 +90,15 @@ public class UserControllerIntegrationTest {
     @Test
     public void dFileUploadTest() throws Exception{
         String fileUploadUrl = "/user/550e8400-e29b-41d4-a716-446655440000/receipts";
-        String originalFileName = "a.txt";
+        String originalFileName = "a.png";
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", originalFileName, "multipart/form-data", "example".getBytes());
         mockMvc.perform(fileUpload(fileUploadUrl)
                 .file(mockMultipartFile)
                 .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isOk())
+                .andExpect(content().string("File was successfully uploaded"))
                 .andDo(document("file-upload", requestParts(
-                        partWithName("file").description("File was successfully uploaded"))))
+                        partWithName("file").description("File to upload"))))
                 .andReturn();
 
     }
