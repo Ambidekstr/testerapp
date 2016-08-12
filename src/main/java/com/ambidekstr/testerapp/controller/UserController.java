@@ -96,7 +96,7 @@ public class UserController {
             }
             return new ResponseEntity<>("File was successfully uploaded", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Failed to upload file", HttpStatus.OK);
+            return new ResponseEntity<>("The file is empty", HttpStatus.OK);
         }
 
     }
