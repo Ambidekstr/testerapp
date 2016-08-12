@@ -71,7 +71,7 @@ include::{snippets}/adding-user/http-response.adoc[]
 
 == Login
 
-Now as you registrate a user you can login with an appropriate email and password.  
+Now as you register a user you can login with an appropriate email and password.  
 
 [[services-login-user]]
 
@@ -112,10 +112,6 @@ Also if you know the user's email you can find out his/her first and last name. 
 === Find user
 
 A `GET` request with email as path parameter will show you user's first and last name.
-
-==== Path parameters
-
-include::{snippets}/find-user-by-email/path-parameters.adoc[]
 
 ==== Curl request
 
