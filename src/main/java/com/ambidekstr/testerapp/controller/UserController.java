@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -35,14 +38,15 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
     private MetaDataService metaDataService;
 
     public UserController(UserService userService, MetaDataService metaDataService){
         this.userService = userService;
         this.metaDataService = metaDataService;
     }
-
-    private final String ROOT = "E:\\";
 
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<String> addUser(@RequestBody User user){
@@ -86,14 +90,16 @@ public class UserController {
     public ResponseEntity<?> fileUpload(@PathVariable UUID uuid, @RequestParam(name="file") MultipartFile file){
         if (!file.isEmpty()) {
             try {
+                String uploadsDir = "/uploads/";
+                String realPathtoUploads =  request.getServletContext().getRealPath(uploadsDir);
+                new File(realPathtoUploads).mkdir();
                 InputStream is = file.getInputStream();
-                Files.copy(is, Paths.get(ROOT, file.getOriginalFilename()), REPLACE_EXISTING);
-                BasicFileAttributes attr = Files.readAttributes(Paths.get(ROOT, file.getOriginalFilename()), BasicFileAttributes.class);
+                Files.copy(is, Paths.get(realPathtoUploads, file.getOriginalFilename()), REPLACE_EXISTING);
+                BasicFileAttributes attr = Files.readAttributes(Paths.get(realPathtoUploads, file.getOriginalFilename()), BasicFileAttributes.class);
                 MetaData metaData = new MetaData(uuid,attr.creationTime().toString(),attr.size());
                 metaDataService.saveMetaData(metaData);
                 is.close();
             } catch (IOException |RuntimeException e) {
-                e.printStackTrace();
                 return new ResponseEntity<>("Failed to upload file", HttpStatus.OK);
             }
             return new ResponseEntity<>("File was successfully uploaded", HttpStatus.OK);
